@@ -1,0 +1,4 @@
+workflows
+node_modules
+.scratch
+**/*.bak

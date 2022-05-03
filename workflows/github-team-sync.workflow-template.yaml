@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: github-team-sync
+
+spec:
+  entrypoint: github-team-sync
+  templates:
+    # Update codefresh runtime
+    - name: github-team-sync
+      serviceAccountName: team-sync
+      inputs:
+        parameters:
+          - name: GIT_TOKEN_SECRET
+          - name: GIT_TOKEN_SECRET_KEY
+          - name: CF_V1_TOKEN_SECRET
+          - name: CF_V1_TOKEN_SECRET_KEY
+          - name: CF_ACCOUNT_ID
+          - name: CF_SUPERADMIN_EMIAL
+            default: "admin@local"
+          - name: DEBUG
+            default: "false"
+          - name: DRY_RUN
+            default: "false"
+          - name: NO_DELETE
+            default: "false"
+          - name: GH_ORG_NAME
+          - name: GH_TEAM_NAME
+          - name: GH_TEAM_PERMISSIONS
+            default: "admin"
+      container:
+        image: quay.io/codefresh_sa/github-team-sync
+        command: [ "node" ]
+        args: [ "index.js" ]
+        env:
+          - name: DRY_RUN
+            value: '{{ inputs.parameters.DRY_RUN }}'
+          - name: DEBUG
+            value: '{{ inputs.parameters.DEBUG }}'
+          - name: NO_DELETE
+            value: '{{ inputs.parameters.NO_DELETE }}'
+          - name: CF_ACCOUNT_ID
+            value: '{{ inputs.parameters.CF_ACCOUNT_ID }}'
+          - name: CF_SUPERADMIN_EMIAL
+            value: '{{ inputs.parameters.CF_SUPERADMIN_EMIAL }}'
+          - name: GH_ORG_NAME
+            value: '{{ inputs.parameters.GH_ORG_NAME }}'
+          - name: GH_TEAM_NAME
+            value: '{{ inputs.parameters.GH_TEAM_NAME }}'
+          - name: GH_TEAM_PERMISSIONS
+            value: '{{ inputs.parameters.GH_TEAM_PERMISSIONS }}'
+          - name: CF_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ inputs.parameters.CF_V1_TOKEN_SECRET }}'
+                key: '{{ inputs.parameters.CF_V1_TOKEN_SECRET_KEY }}'
+          - name: GH_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: '{{ inputs.parameters.GIT_TOKEN_SECRET }}'
+                key: '{{ inputs.parameters.GIT_TOKEN_SECRET_KEY }}'
+                optional: true

@@ -110,7 +110,7 @@ async function addCodefreshUsers(userList) {
     console.log("\nAdding Users to Codefresh");
     for(user of userList) {
         var userId = await addCodefreshUser(user.email);
-        console.log(userId);
+        debug("userId", userId)
 
         var userRole = await addCodefreshUserRole(userId, user.permissions);
     }

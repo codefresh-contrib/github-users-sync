@@ -5,7 +5,7 @@ module.exports = {
     codefresh: {
         apiKey: process.env.CF_API_KEY,
         accountId: '<codefresh-account-id>',
-        // user's email to retain even if they are not on any github org/team
+        // user's email to retain even if they are not on any github org/team (will not add this user, only prevent it from being removed)
         superadmin: 'noone@local'
     },
     github: {

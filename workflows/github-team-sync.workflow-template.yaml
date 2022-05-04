@@ -12,9 +12,13 @@ spec:
       inputs:
         parameters:
           - name: GIT_TOKEN_SECRET
+            default: github-token
           - name: GIT_TOKEN_SECRET_KEY
+            default: token
           - name: CF_V1_TOKEN_SECRET
+            default: codefresh-v1-token
           - name: CF_V1_TOKEN_SECRET_KEY
+            default: token
           - name: CF_ACCOUNT_ID
           - name: CF_SUPERADMIN_EMIAL
             default: "admin@local"

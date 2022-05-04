@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github-team-sync
+spec:
+  dependencies:
+  - eventName: every-hour
+    eventSourceName: calendar
+    name: calendar-dep
+  eventBusName: codefresh-eventbus
+  template:
+    serviceAccountName: argo-server
+  triggers:
+  - template:
+      argoWorkflow:
+        group: argoproj.io
+        operation: submit
+        resource: workflows
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: github-team-sync-
+            spec:
+              arguments:
+                parameters:
+                - name: GIT_TOKEN_SECRET
+                  value: my-github-token-secret
+                - name: CF_V1_TOKEN_SECRET
+                  value: my-codefresh-token-secret
+                - name: CF_ACCOUNT_ID
+                  value: 0000aaaa1111bbbb2222ccccc
+                - name: CF_SUPERADMIN_EMIAL
+                  default: "admin@local"
+                - name: GH_ORG_NAME
+                  default: my-org
+                - name: GH_TEAM_NAME
+                  default: my-team
+              workflowTemplateRef:
+                name: github-team-sync
+        version: v1alpha1
+      name: github-team-sync
+status: {}

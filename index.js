@@ -181,6 +181,7 @@ function debug(name, value){
     }
 }
 
+// The prgoram entrypoint
 async function syncGitHubTeamsToCodefresh(){
     // Get all users of Codefresh account
     var cfTeam = await getCodefreshTeamMembers()

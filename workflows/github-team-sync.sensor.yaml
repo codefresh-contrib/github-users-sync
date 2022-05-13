@@ -37,6 +37,8 @@ spec:
                   default: my-org
                 - name: GH_TEAM_NAME
                   default: my-team
+                - name: EMAILS
+                  value: "admin@user.local,some@user.local"
               workflowTemplateRef:
                 name: github-team-sync
         version: v1alpha1

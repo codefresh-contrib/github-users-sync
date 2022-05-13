@@ -29,13 +29,17 @@ spec:
           - name: NO_DELETE
             default: "false"
           - name: GH_ORG_NAME
+            default: "nil"
           - name: GH_TEAM_NAME
+            default: "nil"
           - name: GH_TEAM_PERMISSIONS
             default: "admin"
+          - name: EMAILS
+            default: "nil"
       container:
         image: quay.io/codefresh_sa/github-team-sync
         command: [ "node" ]
-        args: [ "index.js" ]
+        args: [ "index-from-list.js" ]
         env:
           - name: DRY_RUN
             value: '{{ inputs.parameters.DRY_RUN }}'
@@ -53,6 +57,8 @@ spec:
             value: '{{ inputs.parameters.GH_TEAM_NAME }}'
           - name: GH_TEAM_PERMISSIONS
             value: '{{ inputs.parameters.GH_TEAM_PERMISSIONS }}'
+          - name: EMAILS
+            value: '{{ inputs.parameters.EMAILS }}'
           - name: CF_API_KEY
             valueFrom:
               secretKeyRef:
